@@ -1,0 +1,13 @@
+{
+  "name": "Test-Extension",
+  "version": "1.1.1",
+  "description": "Test Extension: Logs to the console",
+  "author": "N U R O ™ <me@nuro.sh>",
+  "website": "https://tdem.app",
+  "enabled": true,
+  "init": true,
+  "dependencies": [],
+  "conflicts": [],
+  "create": "function () { console.log('Test Extension created!'); }",
+  "destroy": "function () { console.log('Test Extension destroyed!'); }"
+}
