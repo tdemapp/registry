@@ -16,5 +16,8 @@
 			"src": "/(.*)",
 			"dest": "/index.js"
 		}
-	]
+	],
+	"env": {
+		"GH_ACCESS_TOKEN": "@gh_access_token"
+	}
 }
