@@ -7,7 +7,7 @@ module.exports = cache(24 * 60 * 60 * 1000, async (req, res) => {
 	const fetchOptions = {
 		method: 'GET',
 		headers: {
-			Authorization: process.env.GH_ACCESS_TOKEN,
+			'Authorization': `token ${process.env.GH_ACCESS_TOKEN}`,
 		},
 	};
 
