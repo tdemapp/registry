@@ -91,6 +91,7 @@ module.exports = async (req, res) => {
     `https://api.github.com/repos/tdemapp/registry/contents/extensions${req.url}.json`
   )
     .then((data) => {
+			if (data.message === 'Not Found') result(false, data.message)
       result(true, data)
     })
     .catch((err) => {
