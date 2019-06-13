@@ -37,36 +37,36 @@ const result = (res, status, success, message) => res.status(status).end(JSON.st
 // Middleware
 app.use(helmet())
 app.use(cors())
-app.use(cache('1 hour'))
+app.use(cache('1 hour', (req, res) => res.statusCode === 200))
 
 // Endpoints
 app.get('/', async (req, res) => {
-  res.set('Content-Type', 'application/json')
-  await download(apiPrefix)
-    .then(data => result(res, 200, true, data))
-    .catch(err => result(res, err.status, false, err.statusText))
-
-  res.status(200).end(JSON.stringify({
-    name: req.params.extension
-  }))
+  try {
+    const data = await download(apiPrefix)
+    result(res, 200, true, data)
+  } catch (err) {
+    result(res, err.status, false, err.statusText)
+  }
 })
 
 app.get('/:extension', async (req, res) => {
-  res.set('Content-Type', 'application/json')
-
-  let contentUrl
+  let content_url
 
   // Get extension content URL
-  await download(`${apiPrefix}/${req.params.extension}.json`)
-    .then(data => {
-      contentUrl = data.download_url
-    })
-    .catch(err => result(res, err.status, false, err.statusText))
+  try {
+    const json = await download(`${apiPrefix}/${req.params.extension}.json`)
+    content_url = json.download_url
+  } catch (err) {
+    result(res, err.status, false, err.statusText)
+  }
 
   // Fetch extension JSON body
-  await download(contentUrl)
-    .then(data => result(res, 200, true, data))
-    .catch(err => result(res, err.status, false, err.statusText))
+  try {
+    const data = await download(content_url)
+    result(res, 200, true, data)
+  } catch (err) {
+    result(res, err.status, false, err.statusText)
+  }
 })
 
 module.exports = app
