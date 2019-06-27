@@ -57,7 +57,7 @@ app.get('/:extension', async (req, res) => {
     const json = await download(`${apiPrefix}/${req.params.extension}.json`)
     content_url = json.download_url
   } catch (err) {
-    result(res, err.status, false, err.statusText)
+    result(res, err.status, err.statusText)
   }
 
   // Fetch extension JSON body
