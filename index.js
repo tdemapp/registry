@@ -6,7 +6,7 @@ const cors = require('cors')
 const apicache = require('apicache')
 const fetch = require('node-fetch')
 
-const { TOKEN_PRIMARY, TOKEN_SECONDARY } = process.env
+const { ACCESS_TOKEN } = process.env
 
 const app = express()
 const cache = apicache.middleware
@@ -19,7 +19,7 @@ const download = (url) => {
     const fetchOptions = {
       method: 'GET',
       headers: {
-        Authorization: `token ${!!Math.floor(Math.random()*2) ? TOKEN_PRIMARY : TOKEN_SECONDARY}`
+        Authorization: `token ${ACCESS_TOKEN}`
       }
     }
 
