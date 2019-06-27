@@ -32,7 +32,7 @@ const download = (url) => {
 }
 
 // Response object structure
-const result = (res, status, success, message) => res.status(status).end(JSON.stringify({ success, message }))
+const result = (res, status, message) => res.status(status).end(JSON.stringify(message))
 
 // Middleware
 app.use(helmet())
@@ -43,9 +43,9 @@ app.use(cache('1 hour', (req, res) => res.statusCode === 200))
 app.get('/', async (req, res) => {
   try {
     const data = await download(apiPrefix)
-    result(res, 200, true, data)
+    result(res, 200, data)
   } catch (err) {
-    result(res, err.status, false, err.statusText)
+    result(res, err.status, err.statusText)
   }
 })
 
@@ -63,9 +63,9 @@ app.get('/:extension', async (req, res) => {
   // Fetch extension JSON body
   try {
     const data = await download(content_url)
-    result(res, 200, true, data)
+    result(res, 200, data)
   } catch (err) {
-    result(res, err.status, false, err.statusText)
+    result(res, err.status, err.statusText)
   }
 })
 
