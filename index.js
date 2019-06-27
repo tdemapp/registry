@@ -6,6 +6,8 @@ const cors = require('cors')
 const apicache = require('apicache')
 const fetch = require('node-fetch')
 
+const { TOKEN_PRIMARY, TOKEN_SECONDARY } = process.env
+
 const app = express()
 const cache = apicache.middleware
 const apiPrefix = 'https://api.github.com/repos/tdemapp/registry/contents/extensions'
@@ -17,7 +19,7 @@ const download = (url) => {
     const fetchOptions = {
       method: 'GET',
       headers: {
-        Authorization: `token ${process.env.GH_ACCESS_TOKEN}`
+        Authorization: `token ${!!Math.floor(Math.random()*2) ? TOKEN_PRIMARY : TOKEN_SECONDARY}`
       }
     }
 
