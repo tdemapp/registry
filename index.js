@@ -50,19 +50,19 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/:extension', async (req, res) => {
-  let content_url
+  let contentUrl
 
   // Get extension content URL
   try {
     const json = await download(`${apiPrefix}/${req.params.extension}.json`)
-    content_url = json.download_url
+    contentUrl = json.download_url
   } catch (err) {
     result(res, err.status, err.statusText)
   }
 
   // Fetch extension JSON body
   try {
-    const data = await download(content_url)
+    const data = await download(contentUrl)
     result(res, 200, data)
   } catch (err) {
     result(res, err.status, err.statusText)
