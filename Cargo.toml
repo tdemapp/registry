@@ -1,0 +1,11 @@
+[package]
+name = "registry"
+version = "1.2.1"
+authors = [ "N U R O ™ <me@nuro.sh>" ]
+edition = "2018"
+
+[dependencies]
+http = "0.1.17"
+now_lambda = "*"
+serde_json = "1.0.39"
+dotenv_codegen = "0.14.1"

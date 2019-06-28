@@ -7,14 +7,8 @@
 	"regions": ["all"],
 	"builds": [
 		{
-			"src": "index.js",
-			"use": "@now/node"
-		}
-	],
-	"routes": [
-		{
-			"src": "/(.*)",
-			"dest": "/index.js"
+			"src": "index.rs",
+			"use": "@now/rust"
 		}
 	],
 	"env": {

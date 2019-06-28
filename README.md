@@ -11,6 +11,11 @@
   <br />
 </div>
 
+## Build:
+```shell
+cargo build --bin index --release 
+```
+
 ## License:
 
 MIT © [Ben Dixon](https://github.com/tdemapp/registry/blob/master/LICENSE)
