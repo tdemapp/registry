@@ -1,0 +1,12 @@
+[package]
+name = "registry"
+version = "1.2.1"
+authors = [ "N U R O ™ <me@nuro.sh>" ]
+edition = "2018"
+
+[dependencies]
+http = "0.1.17"
+now_lambda = "*"
+reqwest = "0.9.18"
+serde_json = "1.0.40"
+url = "1.7.2"
