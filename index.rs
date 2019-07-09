@@ -1,33 +1,35 @@
-#[macro_use]
-extern crate dotenv_codegen;
+use http::{Request, Response, StatusCode};
+use reqwest::{Client, header};
+use std::env;
+use url::Url;
 
-use http::{Request, Response, StatusCode, header};
-use now_lambda::lambda;
-use serde_json::{Value};
-
-fn fetch (url: String) -> Result<Value> {
-    let access_token: String = format!("token {}", dotenv!("GH_ACCESS_TOKEN"));
-    let request = Request::builder().uri(url).header("Authorization", access_token)?;
-
-    Ok(serde_json::from_str(request)?)
-}
-
-fn handler(req: Request<()>) -> http::Result<Response<String>> {
+fn handler(req: Request<String>) -> http::Result<Response<String>> {
+    let access_token = env::var("GH_ACCESS_TOKEN").expect("Failed to load access token");
     let api_prefix = "https://api.github.com/repos/tdemapp/registry/contents/extensions";
-    let mut response = Response::builder().status(StatusCode::OK);
+    let client = Client::new();
 
-    if req.uri().path() === "/".to_owned() {
-        let extensions = fetch(api_prefix.to_string());
-        response.body(extensions);
-    } else {
-        let concat_url:String = format!("{}{}.json", api_prefix, req.uri().path());
-        let extension = fetch(concat_url);
-        response.body(extension);
-    }
+    let url = match req.uri().path() {
+        "/" => api_prefix.to_string(),
+        _ => format!("{}{}.json", api_prefix, req.uri().path())
+    };
+    let url = Url::parse(&url).expect("Failed to parse URL");
 
-    Ok(response?)
-}
+    let mut fetch = client
+        .get(url)
+        .header("Authorization", format!("token {}", access_token))
+        .send()
+        .expect("Failed to fetch from GitHub");
 
-fn main() -> Result<(), Box<dyn Error>> {
-    Ok(lambda!(handler))
+    assert_eq!(fetch.status(), StatusCode::OK);
+
+    let body = fetch.text().expect("Failed unwrapping fetch body");
+    let body_str = serde_json::to_string(&body).expect("Failed to serialize to JSON");
+
+    let response = Response::builder()
+        .status(StatusCode::OK)
+        .header(header::CONTENT_TYPE, "application/json")
+        .body(body_str)
+        .expect("Failed to generate response");
+
+    Ok(response)
 }
