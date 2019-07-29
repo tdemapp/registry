@@ -6,7 +6,7 @@ const cors = require('cors')
 const apicache = require('apicache')
 const fetch = require('node-fetch')
 
-const { GH_ACCESS_TOKEN } = process.env
+const { GITHUB_TOKEN } = process.env
 
 const app = express()
 const cache = apicache.middleware
@@ -19,7 +19,7 @@ const download = (url) => {
     const fetchOptions = {
       method: 'GET',
       headers: {
-        Authorization: `token ${GH_ACCESS_TOKEN}`
+        Authorization: `token ${GITHUB_TOKEN}`
       }
     }
 
